@@ -34,13 +34,13 @@ def find_closest(pixel):
             closest = colour_name
     return COLOURS[closest]
 
-img = Image.open("data/large_orange_lake.jpg")
+img = Image.open("data/blue_mountain.jpg")
 img_np = np.array(img)
 
 reshaped_img = img_np.reshape((-1, 3))
 
 # change this value based on complexity of the image
-num_clusters = 9
+num_clusters = 6
 
 kmeans = KMeans(n_clusters=num_clusters, random_state=0, n_init='auto')
 kmeans.fit(reshaped_img)
@@ -54,9 +54,9 @@ draw = ImageDraw.Draw(solid_lines_img)
 # Draw solid lines between clusters
 for y in range(img.height - 1):
     for x in range(img.width - 1):
-        if labels[y * img.width + x] != labels[y * img.width + x + 1] or \
+        if labels[y * img.width + x] != labels[y * img.width + (x + 1)] or \
            labels[y * img.width + x] != labels[(y + 1) * img.width + x]:
-            draw.line([(x, y), (x + 1, y)], fill='black', width=1)
-            draw.line([(x, y), (x, y + 1)], fill='black', width=1)
+            draw.point((x, y), fill='black')
 
-solid_lines_img.save('data/picture_clustered.jpg')
+
+solid_lines_img.save('clustered/clustered_kmeans.jpg')
